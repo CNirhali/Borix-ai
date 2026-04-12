@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borix Dashboard - MVP Dry Run</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Customer Side: WhatsApp/Insta Simulation -->
+        <section class="customer-view glass-panel">
+            <div class="view-header">
+                <h2>📱 Customer Chat Simulation</h2>
+                <div class="status-indicator online"></div>
+            </div>
+            
+            <div class="chat-container" id="chat-container">
+                <div class="message bot">
+                    Hey! Welcome to Cafe Durga! What would you like to order today?
+                </div>
+                <!-- Chat messages will appear here -->
+            </div>
+            
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" placeholder="e.g. bhai 2 cold coffee parcel dena..." autocomplete="off">
+                <button id="send-button">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Merchant Side: POS / Dashboard -->
+        <section class="merchant-view glass-panel">
+            <div class="view-header merchant-header">
+                <div class="logo-area">
+                    <h1 class="logo">BORIX <span class="badge">Order MVP</span></h1>
+                </div>
+                <div class="merchant-profile">Cafe Durga POS</div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-title">Active Orders</div>
+                    <div class="stat-value" id="active-orders-count">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Pending Items</div>
+                    <div class="stat-value" id="pending-items-count">0</div>
+                </div>
+            </div>
+
+            <div class="orders-board">
+                <h3 class="section-title">Live Kitchen Queue</h3>
+                <div class="orders-grid" id="orders-grid">
+                    <!-- Order cards will be dynamically injected here -->
+                    <div class="empty-state">Waiting for incoming orders...</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Template for Order Card -->
+    <template id="order-card-template">
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-id">#ID</span>
+                <span class="order-status badge-pending">Pending</span>
+            </div>
+            <div class="order-raw-msg">"Original message here"</div>
+            <div class="order-items">
+                <!-- Items injected here -->
+            </div>
+            <div class="order-actions">
+                <button class="action-btn complete-btn">Mark Complete</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
