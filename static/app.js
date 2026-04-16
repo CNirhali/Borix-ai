@@ -118,6 +118,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const completeBtn = clone.querySelector('.complete-btn');
             completeBtn.addEventListener('click', () => markOrderComplete(order.id));
 
+            const pushBtn = clone.querySelector('.pos-push-btn');
+            if (order.pos_pushed) {
+                pushBtn.textContent = 'Pushed to POS';
+                pushBtn.disabled = true;
+                pushBtn.style.opacity = '0.5';
+                pushBtn.style.cursor = 'not-allowed';
+            } else {
+                pushBtn.addEventListener('click', () => pushOrderToPOS(order.id, pushBtn));
+            }
+
             ordersGrid.appendChild(clone);
         });
 
@@ -136,6 +146,34 @@ document.addEventListener('DOMContentLoaded', () => {
             fetchOrders();
         } catch (error) {
             console.error("Error updating order status:", error);
+        }
+    }
+
+    async function pushOrderToPOS(orderId, btnElement) {
+        btnElement.textContent = 'Pushing...';
+        btnElement.disabled = true;
+        try {
+            const response = await fetch(`/api/orders/${orderId}/push_pos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pos_name: 'petpooja' })
+            });
+            const result = await response.json();
+            if (result.success) {
+                btnElement.textContent = 'Pushed to POS';
+                btnElement.style.opacity = '0.5';
+                btnElement.style.cursor = 'not-allowed';
+                fetchOrders();
+            } else {
+                btnElement.textContent = 'Push Failed';
+                btnElement.style.background = '#ef4444';
+                btnElement.disabled = false;
+                console.error("Push failed:", result.error);
+            }
+        } catch (error) {
+            console.error("Error pushing to POS:", error);
+            btnElement.textContent = 'Push to PetPooja';
+            btnElement.disabled = false;
         }
     }
 

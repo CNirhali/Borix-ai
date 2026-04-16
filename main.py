@@ -5,6 +5,7 @@ import os
 
 from nlp_engine import extract_intent
 from data_store import add_order, get_all_orders, update_order_status
+from integrations import get_pos_adapter
 
 app = FastAPI(title="Borix Order MVP")
 
@@ -48,6 +49,35 @@ async def update_status(order_id: str, request: Request):
     if order:
         return {"success": True, "order": order}
     return {"success": False, "error": "Order not found"}
+
+@app.post("/api/orders/{order_id}/push_pos")
+async def push_order_to_pos(order_id: str, request: Request):
+    # Retrieve the order
+    orders = get_all_orders()
+    target_order = next((o for o in orders if o["id"] == order_id), None)
+    
+    if not target_order:
+        return {"success": False, "error": "Order not found"}
+        
+    data = await request.json()
+    pos_name = data.get("pos_name", "petpooja")
+    adapter = get_pos_adapter(pos_name)
+    
+    if not adapter:
+        return {"success": False, "error": f"POS adapter '{pos_name}' not found."}
+        
+    try:
+        # Push the order via chosen adapter
+        response = adapter.push_order(target_order)
+        if response.get("success"):
+            # Update local datastore
+            target_order["pos_pushed"] = True
+            target_order["pos_order_id"] = response.get("pos_order_id")
+            return {"success": True, "pos_response": response}
+        else:
+            return {"success": False, "error": "Failed to push order to POS."}
+    except Exception as e:
+        return {"success": False, "error": str(e)}
 
 # Mount static files at the root
 # Ensure the static directory exists

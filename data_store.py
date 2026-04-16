@@ -13,7 +13,9 @@ def add_order(customer_message: str, parsed_items: List[Dict]):
         "customer_message": customer_message,
         "items": parsed_items,
         "status": "pending", # pending, confirmed, completed
-        "payment_status": "unpaid"
+        "payment_status": "unpaid",
+        "pos_pushed": False,
+        "pos_order_id": None
     }
     orders_db.append(order)
     return order
