@@ -90,6 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
             clone.querySelector('.order-id').textContent = `#${order.id}`;
             clone.querySelector('.order-raw-msg').textContent = `"${order.customer_message}"`;
             
+            const sourceBadge = clone.querySelector('.order-source');
+            if (order.source === 'whatsapp') {
+                sourceBadge.innerHTML = '🟢 WhatsApp';
+                sourceBadge.style.color = '#25D366';
+            } else if (order.source === 'telegram') {
+                sourceBadge.innerHTML = '✈️ Telegram';
+                sourceBadge.style.color = '#38bdf8';
+            } else {
+                sourceBadge.innerHTML = '🌐 Web';
+                sourceBadge.style.color = '#a78bfa';
+            }
+            
             const statusBadge = clone.querySelector('.order-status');
             statusBadge.textContent = order.status.charAt(0).toUpperCase() + order.status.slice(1);
             

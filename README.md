@@ -3,6 +3,7 @@
 Borix is an AI-powered SaaS tool explicitly built to eliminate chaotic workflows for small and medium-sized businesses (SMBs). This repository contains the MVP ("Stage 1 Development") for **Borix Order**, demonstrating how unstructured, native-language chats (like WhatsApp or Instagram DMs) can be instantly interpreted and converted into structured queue items for a Merchant Point-of-Sale (POS) or Kitchen Display.
 
 ![Petpooja Plug & Play Integration Demo](pos_integration.webp)
+![WhatsApp & Telegram Omnichannel Demo](omnichannel_integration.webp)
 
 ## Features
 

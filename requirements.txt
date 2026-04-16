@@ -4,3 +4,4 @@ pydantic==2.5.2
 Pillow
 imageio[ffmpeg]
 numpy
+python-multipart

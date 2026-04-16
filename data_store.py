@@ -6,7 +6,7 @@ from typing import List, Dict
 
 orders_db = []
 
-def add_order(customer_message: str, parsed_items: List[Dict]):
+def add_order(customer_message: str, parsed_items: List[Dict], source: str = "web", customer_identifier: str = None):
     order_id = str(uuid.uuid4())[:8]
     order = {
         "id": order_id,
@@ -15,7 +15,9 @@ def add_order(customer_message: str, parsed_items: List[Dict]):
         "status": "pending", # pending, confirmed, completed
         "payment_status": "unpaid",
         "pos_pushed": False,
-        "pos_order_id": None
+        "pos_order_id": None,
+        "source": source,
+        "customer_identifier": customer_identifier
     }
     orders_db.append(order)
     return order

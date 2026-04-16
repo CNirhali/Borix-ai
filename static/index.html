@@ -65,7 +65,10 @@
     <template id="order-card-template">
         <div class="order-card">
             <div class="order-header">
-                <span class="order-id">#ID</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span class="order-id">#ID</span>
+                    <span class="order-source" style="font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(0,0,0,0.2);">🌐</span>
+                </div>
                 <span class="order-status badge-pending">Pending</span>
             </div>
             <div class="order-raw-msg">"Original message here"</div>

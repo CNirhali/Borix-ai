@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -78,6 +78,46 @@ async def push_order_to_pos(order_id: str, request: Request):
             return {"success": False, "error": "Failed to push order to POS."}
     except Exception as e:
         return {"success": False, "error": str(e)}
+
+@app.post("/api/webhooks/whatsapp")
+async def whatsapp_webhook(Body: str = Form(...), From: str = Form(...)):
+    # Run NLP extraction
+    result = extract_intent(Body)
+    if result["success"] and len(result["items"]) > 0:
+        add_order(customer_message=Body, parsed_items=result["items"], source="whatsapp", customer_identifier=From)
+        reply = result["response"]
+    else:
+        reply = result["response"]
+    
+    # Return TwiML response
+    twiml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+    <Message>{reply}</Message>
+</Response>"""
+    return Response(content=twiml, media_type="application/xml")
+
+@app.post("/api/webhooks/telegram")
+async def telegram_webhook(request: Request):
+    data = await request.json()
+    message = data.get("message", {})
+    text = message.get("text", "")
+    chat_id = message.get("chat", {}).get("id", "")
+    
+    if not text:
+        return {"ok": True}
+        
+    result = extract_intent(text)
+    if result["success"] and len(result["items"]) > 0:
+        add_order(customer_message=text, parsed_items=result["items"], source="telegram", customer_identifier=str(chat_id))
+        reply = result["response"]
+    else:
+        reply = result["response"]
+        
+    return {
+        "method": "sendMessage",
+        "chat_id": chat_id,
+        "text": reply
+    }
 
 # Mount static files at the root
 # Ensure the static directory exists
