@@ -7,14 +7,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const pendingItemsCount = document.getElementById('pending-items-count');
     const template = document.getElementById('order-card-template');
 
-    // Polling interval for dashboard updates
+    // Loyalty Elements
+    const regionSelect = document.getElementById('region-select');
+    const normalCoinsVal = document.getElementById('normal-coins-val');
+    const blockchainCoinsVal = document.getElementById('blockchain-coins-val');
+    const inrValueVal = document.getElementById('inr-value-val');
+
+    const customerIdentifier = "default_user";
+
+    // Polling intervals
     setInterval(fetchOrders, 2000);
+    setInterval(fetchCustomerProfile, 2000); // Poll profile to see new coins
 
     // Event Listeners
     sendButton.addEventListener('click', sendMessage);
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
+    
+    regionSelect.addEventListener('change', async (e) => {
+        const newRegion = e.target.value;
+        await fetch(`/api/customer/${customerIdentifier}/set_region`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ region: newRegion })
+        });
+        fetchCustomerProfile();
+    });
+
 
     function addMessageToChat(text, sender) {
         const msgDiv = document.createElement('div');
@@ -67,6 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
             renderOrders(data.orders);
         } catch (error) {
             console.error("Error fetching orders:", error);
+        }
+    }
+
+    async function fetchCustomerProfile() {
+        try {
+            const response = await fetch(`/api/customer/${customerIdentifier}`);
+            const data = await response.json();
+            
+            // Update UI
+            if (regionSelect.value !== data.profile.region) {
+                regionSelect.value = data.profile.region;
+            }
+            
+            normalCoinsVal.textContent = data.profile.normal_coins.toFixed(2);
+            blockchainCoinsVal.textContent = data.profile.blockchain_coins.toFixed(2);
+            inrValueVal.textContent = data.inr_value.toFixed(2);
+        } catch (error) {
+            console.error("Error fetching profile:", error);
         }
     }
 
@@ -191,4 +229,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial fetch
     fetchOrders();
+    fetchCustomerProfile();
 });

@@ -16,6 +16,38 @@
                 <div class="status-indicator online"></div>
             </div>
             
+            <!-- Digital Loyalty Card -->
+            <div class="digital-card-container">
+                <div class="digital-card">
+                    <div class="card-header">
+                        <h3>🪙 Loyalty Pass</h3>
+                        <div class="region-selector">
+                            <label for="region-select">Region:</label>
+                            <select id="region-select">
+                                <option value="India">India (Normal)</option>
+                                <option value="UAE">UAE (Blockchain)</option>
+                                <option value="USA">USA (Blockchain)</option>
+                                <option value="El Salvador">El Salvador (Blockchain)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="coin-stat">
+                            <span class="coin-label">Normal Coins (0.5x)</span>
+                            <span class="coin-value" id="normal-coins-val">0.00</span>
+                        </div>
+                        <div class="coin-stat blockchain">
+                            <span class="coin-label">Blockchain Coins (3.0x)</span>
+                            <span class="coin-value" id="blockchain-coins-val">0.00</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <span>Total INR Value:</span>
+                        <span class="inr-value">₹<span id="inr-value-val">0.00</span></span>
+                    </div>
+                </div>
+            </div>
+            
             <div class="chat-container" id="chat-container">
                 <div class="message bot">
                     Hey! Welcome to Cafe Durga! What would you like to order today?

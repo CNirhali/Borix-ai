@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 
 from nlp_engine import extract_intent
-from data_store import add_order, get_all_orders, update_order_status
+from data_store import add_order, get_all_orders, update_order_status, get_customer_profile, update_customer_region
 from integrations import get_pos_adapter
 
 app = FastAPI(title="Borix Order MVP")
@@ -40,6 +40,24 @@ async def handle_chat(request: Request):
 async def fetch_orders():
     orders = get_all_orders()
     return {"orders": orders}
+
+@app.get("/api/customer/{identifier}")
+async def get_customer(identifier: str):
+    profile = get_customer_profile(identifier)
+    # Calculate INR value locally for the frontend
+    inr_value = (profile["normal_coins"] * 0.5) + (profile["blockchain_coins"] * 3.0)
+    
+    return {
+        "profile": profile,
+        "inr_value": round(inr_value, 2)
+    }
+
+@app.post("/api/customer/{identifier}/set_region")
+async def set_customer_region(identifier: str, request: Request):
+    data = await request.json()
+    new_region = data.get("region")
+    profile = update_customer_region(identifier, new_region)
+    return {"success": True, "profile": profile}
 
 @app.post("/api/orders/{order_id}/status")
 async def update_status(order_id: str, request: Request):

@@ -4,13 +4,16 @@ Borix is an AI-powered SaaS tool explicitly built to eliminate chaotic workflows
 
 ![Petpooja Plug & Play Integration Demo](pos_integration.webp)
 ![WhatsApp & Telegram Omnichannel Demo](omnichannel_integration.webp)
+![Regional Blockchain Integration](blockchain_integration.webp)
 
 ## Features
 
 - **Plug & Play POS Integrations:** Push recognized orders straight from Borix into external merchant cafe software like PetPooja with one click via scalable webhook API adapters.
+- **Regional Targeted Blockchain System:** Custom loyalty system handling normal vs crypto point allocation (`3.0x multiplier`) depending on customer geographies (e.g. UAE vs India).
 - **Split-Pane Realistic Demo:**
   - **Customer Chat Simulator:** A responsive chat UI where users can type orders using casual slang (e.g., *"bhai 2 cold coffee aur 1 sandwich parcel dena"*).
   - **Merchant POS Dashboard:** A live-updating grid tracking queue status, active orders, and calculated item totals.
+  - **Digital Loyalty Pass:** A premium widget integrated below the simulator header tracking user points and their conversion rates in real time.
 - **Intelligent NLP Engine (Mocked MVP):** The backend actively extracts intent, recognizes items (like Cold Coffee and Sandwiches), aggregates quantities, and generates structured order objects.
 - **Micro-Animations & Premium UI:** The frontend is built entirely using vanilla tech (HTML/CSS/JS) but utilizes modern design systems (glassmorphism, vibrant syntax, smooth transitions) for an incredibly premium feel.
 - **Media Converter Engine (`converter.py`):** A custom built-in script designed to easily convert animated `.webp` screen recordings into `.mp4` videos, `.gif` files, or `.png` thumbnails for sharing demos on social media platforms like LinkedIn.
